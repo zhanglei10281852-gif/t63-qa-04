@@ -59,10 +59,11 @@ func (t Trip) Complete(odometer int, at time.Time) (Trip, error) {
 		return Trip{}, apperror.Conflict(apperror.ErrInvalidState)
 	}
 	stamp := at.UTC()
-	completed := Trip{ID: t.ID, Status: Completed, Version: t.Version + 1}
+	completed := t
+	completed.Status = Completed
 	completed.EndOdometer = &odometer
 	completed.EndedAt = &stamp
-	completed.CreatedAt = t.CreatedAt
+	completed.Version = t.Version + 1
 	completed.UpdatedAt = stamp
 	return completed, nil
 }
